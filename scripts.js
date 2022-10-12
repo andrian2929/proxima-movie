@@ -28,7 +28,7 @@ function getMovies(searchKeyword) {
                      <p class="card-text text-muted"><span>${element.release_date}</span> </p>
                      <p class="card-text text-muted fw-bold"><span>${element.vote_average}</span> </p>
                    
-                     <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat detail</button>
+                     <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">See detail</button>
                   
                    </div>
                  </div>
@@ -104,7 +104,7 @@ function getPopularMovie() {
                    <p class="card-text text-muted"><span>${element.release_date}</span> </p>
                    <p class="card-text text-muted fw-bold"><span>${element.vote_average}</span> </p>
                  
-                   <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat detail</button>
+                   <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">See detail</button>
                 
                  </div>
                </div>
