@@ -66,7 +66,7 @@ function getMovies(searchKeyword) {
                         }</li>
                         <li class="list-group-item"><strong>Duration : </strong>${(
                           movie.runtime / 60
-                        ).toFixed(2)} jam</li>
+                        ).toFixed(2)} hours</li>
                         <li class="list-group-item"><strong>Overview : </strong><br>${
                           movie.overview
                         }</li>
@@ -142,7 +142,7 @@ function getPopularMovie() {
                       }</li>
                       <li class="list-group-item"><strong>Duration : </strong>${(
                         movie.runtime / 60
-                      ).toFixed(2)} jam</li>
+                      ).toFixed(2)} hours</li>
                       <li class="list-group-item"><strong>Overview : </strong><br>${
                         movie.overview
                       }</li>
