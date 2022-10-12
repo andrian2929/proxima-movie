@@ -8,7 +8,7 @@ document.getElementById("btn-cari").addEventListener("click", (e) => {
 
 function getMovies(searchKeyword) {
   let response = fetch(
-    "http://www.omdbapi.com/?apikey=7cad8fe4&s=" + searchKeyword
+    "https://www.omdbapi.com/?apikey=7cad8fe4&s=" + searchKeyword
   )
     .then((response) => response.json())
     .then((data) => {
@@ -34,7 +34,7 @@ function getMovies(searchKeyword) {
       for (let i = 0; i < element.length; i++) {
         element[i].addEventListener("click", (e) => {
           let id = e.target.dataset.id;
-          fetch("http://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
+          fetch("https://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
             .then((response) => response.json())
             .then((data) => {
               console.log(data);
@@ -70,7 +70,7 @@ function getMovies(searchKeyword) {
 function getPopularMovie() {
   movieId = ["tt11909878", "tt1655389", "tt12593682", "tt9114286"];
   movieId.forEach((id) => {
-    fetch("http://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
+    fetch("https://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
       .then((response) => response.json())
       .then((data) => {
         let movie = data;
