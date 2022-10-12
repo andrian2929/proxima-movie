@@ -7,22 +7,105 @@ document.getElementById("btn-cari").addEventListener("click", (e) => {
 });
 
 function getMovies(searchKeyword) {
+  if (searchKeyword == "") {
+    getPopularMovie();
+  } else {
+    let response = fetch(
+      "https://api.themoviedb.org/3/search/movie?api_key=0a03a21e889f7f720b11bba9f7532337&query=" +
+        searchKeyword
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let movies = data.results;
+
+        let movie_list = "";
+        movies.forEach((element) => {
+          movie_list += ` <div class="col-md-4 col-sm-6 col-6 col-lg-3">
+                 <div class="card mb-3">
+                   <img  src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${element.poster_path}" />
+                   <div class="card-body">
+                     <h5 class="card-title">${element.title}</h5>
+                     <p class="card-text text-muted"><span>${element.release_date}</span> </p>
+                     <p class="card-text text-muted fw-bold"><span>${element.vote_average}</span> </p>
+                   
+                     <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat detail</button>
+                  
+                   </div>
+                 </div>
+               </div>`;
+        });
+
+        document.getElementById("movie-list").innerHTML = movie_list;
+
+        let element = document.getElementsByClassName("button-detail");
+        for (let i = 0; i < element.length; i++) {
+          element[i].addEventListener("click", (e) => {
+            let id = e.target.dataset.id;
+            fetch(
+              `https://api.themoviedb.org/3/movie/${id}?api_key=0a03a21e889f7f720b11bba9f7532337`
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                let movie = data;
+                let movie_detail = `
+                  <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${
+                        movie.poster_path
+                      }" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                      <ul class="list-group">
+                        <li class="list-group-item"><h4>${movie.title}</h4></li>
+                        <li class="list-group-item"><strong>Genre : </strong>${movie.genres
+                          .map((genre) => genre.name)
+                          .join(", ")}</li>
+                        <li class="list-group-item"><strong>Language : </strong>${
+                          movie.original_language
+                        }</li>
+                        <li class="list-group-item"><strong>Duration : </strong>${(
+                          movie.runtime / 60
+                        ).toFixed(2)} jam</li>
+                        <li class="list-group-item"><strong>Overview : </strong><br>${
+                          movie.overview
+                        }</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                  `;
+                document.getElementById("detail-body").innerHTML = movie_detail;
+              });
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+}
+
+function getPopularMovie() {
   let response = fetch(
-    "https://www.omdbapi.com/?apikey=7cad8fe4&s=" + searchKeyword
+    "https://api.themoviedb.org/3/movie/popular?api_key=0a03a21e889f7f720b11bba9f7532337"
   )
     .then((response) => response.json())
     .then((data) => {
-      let movies = data.Search;
+      let movies = data.results;
+
       let movie_list = "";
       movies.forEach((element) => {
         movie_list += ` <div class="col-md-4 col-sm-6 col-6 col-lg-3">
                <div class="card mb-3">
-                 <img  src="${element.Poster}" style= "width:auto; height:auto;
-                 object-fit:cover;" />
+                 <img  src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${element.poster_path}" />
                  <div class="card-body">
-                   <h5 class="card-title">${element.Title}</h5>
-                   <p class="card-text text-muted">${element.Year}</p>
-                   <button data-id = "${element.imdbID}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat detail</button>
+                   <h5 class="card-title">${element.title}</h5>
+                   <p class="card-text text-muted"><span>${element.release_date}</span> </p>
+                   <p class="card-text text-muted fw-bold"><span>${element.vote_average}</span> </p>
+                 
+                   <button data-id = "${element.id}" type="button" class="button-detail btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat detail</button>
+                
                  </div>
                </div>
              </div>`;
@@ -34,24 +117,35 @@ function getMovies(searchKeyword) {
       for (let i = 0; i < element.length; i++) {
         element[i].addEventListener("click", (e) => {
           let id = e.target.dataset.id;
-          fetch("https://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}?api_key=0a03a21e889f7f720b11bba9f7532337`
+          )
             .then((response) => response.json())
             .then((data) => {
-              console.log(data);
               let movie = data;
               let movie_detail = `
                 <div class="container-fluid">
                 <div class="row">
                   <div class="col-md-4">
-                    <img src="${movie.Poster}" class="img-fluid">
+                    <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${
+                      movie.poster_path
+                    }" class="img-fluid">
                   </div>
                   <div class="col-md-8">
                     <ul class="list-group">
-                      <li class="list-group-item"><h4>${movie.Title}</h4></li>
-                      <li class="list-group-item"><strong>Director : </strong>${movie.Director}</li>
-                      <li class="list-group-item"><strong>Actors : </strong>${movie.Actors}</li>
-                      <li class="list-group-item"><strong>Writer : </strong>${movie.Writer}</li>
-                      <li class="list-group-item"><strong>Plot : </strong><br>${movie.Plot}</li>
+                      <li class="list-group-item"><h4>${movie.title}</h4></li>
+                      <li class="list-group-item"><strong>Genre : </strong>${movie.genres
+                        .map((genre) => genre.name)
+                        .join(", ")}</li>
+                      <li class="list-group-item"><strong>Language : </strong>${
+                        movie.original_language
+                      }</li>
+                      <li class="list-group-item"><strong>Duration : </strong>${(
+                        movie.runtime / 60
+                      ).toFixed(2)} jam</li>
+                      <li class="list-group-item"><strong>Overview : </strong><br>${
+                        movie.overview
+                      }</li>
                     </ul>
                   </div>
                 </div>
@@ -65,29 +159,6 @@ function getMovies(searchKeyword) {
     .catch((error) => {
       console.log(error);
     });
-}
-
-function getPopularMovie() {
-  movieId = ["tt11909878", "tt1655389", "tt12593682", "tt9114286"];
-  movieId.forEach((id) => {
-    fetch("https://www.omdbapi.com/?apikey=7cad8fe4&i=" + id)
-      .then((response) => response.json())
-      .then((data) => {
-        let movie = data;
-        let movie_list = `
-        <div class="col-md-4 col-sm-6 col-6 col-lg-3">
-          <div class="card mb-3">
-            <img  src="${movie.Poster}" style= "width:auto; height:auto;
-            object-fit:cover;" />
-            <div class="card-body">
-              <h5 class="card-title">${movie.Title}</h5>
-              <p class="card-text text-muted">${movie.Year}</p>
-            </div>
-          </div>
-        </div>`;
-        document.getElementById("movie-list").innerHTML += movie_list;
-      });
-  });
 }
 
 getPopularMovie();
