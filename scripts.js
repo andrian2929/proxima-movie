@@ -88,7 +88,7 @@ function getMovies(searchKeyword) {
 
 function getPopularMovie() {
   let response = fetch(
-    "https://api.themoviedb.org/3/movie/popular?api_key=0a03a21e889f7f720b11bba9f7532337"
+    "https://api.themoviedb.org/3/discover/movie?api_key=0a03a21e889f7f720b11bba9f7532337&sort_by=popularity.desc"
   )
     .then((response) => response.json())
     .then((data) => {
